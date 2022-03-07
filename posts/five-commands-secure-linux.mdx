@@ -4,70 +4,70 @@ description: "short list of five useful commands."
 date: Mar 06 2022
 ---
 
-Updates
-## on the linux server
-# enable automatic updates
+# Updates
+# on the linux server
+## enable automatic updates
 > apt install unattended-upgrades
 > dpkg-reconfigure --priority=low unattended-upgrades #-> set yes
 
-User / sudo
-## on the linux server
-# set ssh user
+# User / sudo
+# on the linux server
+## set ssh user
 > add user your-username #-> set a password and skip all with enter 
 # add user to sudo group
 > udermod -aG sudo your-username
 
-SSH
-## on the linux server
+# SSH
+# on the linux server
 # passwords sucks
-# create a ssh keypair
+## create a ssh keypair
 > mkdir ~/.ssh && chmod 700 ~/.ssh
 
-## on your local machine in my case windows
-# in powershell create a key-pair 
+# on your local machine in my case windows
+## in powershell create a key-pair 
 > ssh-keygen -b 4096 #-> skip all with enter
-# copy your public key to your remote server (*.pub)
-# from windows to a linux server
+## copy your public key to your remote server (*.pub)
+## from windows to a linux server
 > scp $env:USERPROFILE/.ssh/id_rsa.pub your-username@remote-serverip:~/.ssh/authorized_keys
 
-Login
+# Login
 ## manage logins
-# on the linux server
+## on the linux server
 > ssh your-username@remote-serverip
-# edit sshd_config file
+## edit sshd_config file
 > sudo nano /etc/ssh/sshd_config
-# change the port from default 22 to another port 2022 for example
+## change the port from default 22 to another port 2022 for example
 Port 2022
-# only allow ipv4
+## only allow ipv4
 AddressFamily inet
-# permit root login to no
+## permit root login to no
 PermitRootLogin no
-#disable password authentication
+## disable password authentication
 PasswordAuthentication no
-# restart sshd to activate changes in sshd_config
+## restart sshd to activate changes in sshd_config
 > sudo systemctl restart sshd
 
 Firewall
-## use ufw (uncomplicated firewall)
+# use ufw (uncomplicated firewall)
 # on the linux server
-# lets see which ports are in use
+## lets see which ports are in use
 > sudo ss -tupln
-# install ufw
+## install ufw
 > sudo apt install ufw
 > sudo ufw status # should be inactive
 > sudo ufw allow 2022
 > sudo ufw enable # set yes 
 > sudo ufw status # should be activated
-# before you leave this machine, try to use connection in a new terminal
+## before you leave this machine, try to use connection in a new terminal
 > ssh your-username@remote-serverip -p 2022 # if it works all things are good ;)
-# for example, if you want to disable ping for security reasons
+## for example, if you want to disable ping for security reasons
 > sudo nano /etc/ufw/before.rules
-# edit one line in this file
-# ok icmp codes for INPUT
+## edit one line in this file
+## ok icmp codes for INPUT
 -A ufw-before-input -p icmp --icmp-type echo-request -j DROP
 > sudo ufw reload
-# now check if ping get requests, if yes, reboot your linux server
+## now check if ping get requests, if yes, reboot your linux server
 > sudo reboot
-# now, it should be no more request on ping
+## now, it should be no more request on ping
 # done…
 
