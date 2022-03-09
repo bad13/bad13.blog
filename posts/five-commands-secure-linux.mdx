@@ -5,7 +5,7 @@ date: Mar 06 2022
 ---
 
 # Updates
-> on the linux server -> enable automatic updates
+on the linux server -> enable automatic updates
 
 apt install unattended-upgrades
 dpkg-reconfigure --priority=low unattended-upgrades #-> set yes
@@ -13,22 +13,24 @@ dpkg-reconfigure --priority=low unattended-upgrades #-> set yes
 # User / sudo
 on the linux server
 set ssh user
-> add user your-username #-> set a password and skip all with enter 
+
+add user your-username
+
 # add user to sudo group
-> udermod -aG sudo your-username
+udermod -aG sudo your-username
 
-# SSH
-on the linux server
-passwords sucks
-create a ssh keypair
-> mkdir ~/.ssh && chmod 700 ~/.ssh
+# SSH passwords sucks
+on the linux server -> create a ssh keypair
 
-on your local machine in my case windows
-in powershell create a key-pair 
-> ssh-keygen -b 4096 #-> skip all with enter
-copy your public key to your remote server (*.pub)
-from windows to a linux server
-> scp $env:USERPROFILE/.ssh/id_rsa.pub your-username@remote-serverip:~/.ssh/authorized_keys
+mkdir ~/.ssh && chmod 700 ~/.ssh
+
+on your local machine in my case windows via powershell create a key-pair 
+
+ssh-keygen -b 4096 #-> skip all with enter
+
+copy your public key to your remote server (*.pub) from windows to a linux server
+
+scp $env:USERPROFILE/.ssh/id_rsa.pub your-username@remote-serverip:~/.ssh/authorized_keys
 
 # Login
 manage logins
