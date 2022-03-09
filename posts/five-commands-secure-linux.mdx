@@ -8,20 +8,18 @@ date: Mar 06 2022
 _apt install unattended-upgrades_
 _dpkg-reconfigure --priority=low unattended-upgrades_
 
-# User / sudo
-on the linux server set ssh user
-
+<h2>Rule 2: Create a individual user</h2>
 _add user your-username_
 
-# add user to sudo group
+<h3>add user to sudo group</h3>
 _udermod -aG sudo your-username_
 
-# SSH passwords sucks
+<h3>SSH passwords sucks</h3>
 on the linux server -> create a ssh keypair
 
 _mkdir ~/.ssh && chmod 700 ~/.ssh_
 
-on your local machine in my case windows via powershell create a key-pair 
+<h3>on your local machine in my case windows via powershell create a key-pair</h3> 
 
 _ssh-keygen -b 4096_  
 skip all with enter
