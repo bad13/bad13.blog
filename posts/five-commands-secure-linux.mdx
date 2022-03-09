@@ -7,79 +7,87 @@ date: Mar 06 2022
 # Updates
 on the linux server -> enable automatic updates
 
-apt install unattended-upgrades
-dpkg-reconfigure --priority=low unattended-upgrades #-> set yes
+_apt install unattended-upgrades_
+_dpkg-reconfigure --priority=low unattended-upgrades_
 
 # User / sudo
-on the linux server
-set ssh user
+on the linux server set ssh user
 
-add user your-username
+_add user your-username_
 
 # add user to sudo group
-udermod -aG sudo your-username
+_udermod -aG sudo your-username_
 
 # SSH passwords sucks
 on the linux server -> create a ssh keypair
 
-mkdir ~/.ssh && chmod 700 ~/.ssh
+_mkdir ~/.ssh && chmod 700 ~/.ssh_
 
 on your local machine in my case windows via powershell create a key-pair 
 
-ssh-keygen -b 4096 #-> skip all with enter
+_ssh-keygen -b 4096_  
+skip all with enter
 
 copy your public key to your remote server (*.pub) from windows to a linux server
 
-scp $env:USERPROFILE/.ssh/id_rsa.pub your-username@remote-serverip:~/.ssh/authorized_keys
+_scp $env:USERPROFILE/.ssh/id_rsa.pub your-username@remote-serverip:~/.ssh/authorized_keys_
 
 # Login
-manage logins
-on the linux server
-> ssh your-username@remote-serverip
+manage logins on the linux server
+_ssh your-username@remote-serverip_
+
 edit sshd_config file
-> sudo nano /etc/ssh/sshd_config
+_sudo nano /etc/ssh/sshd_config_
 
 change the port from default 22 to another port 2022 for example
-Port 2022
+_Port 2022_
 
 only allow ipv4
-AddressFamily inet
+_AddressFamily inet_
 
 permit root login to no
-PermitRootLogin no
+_PermitRootLogin no_
 
 disable password authentication
-PasswordAuthentication no
+_PasswordAuthentication no_
 
 restart sshd to activate changes in sshd_config
-> sudo systemctl restart sshd
+_sudo systemctl restart sshd_
 
 # Firewall
-use ufw (uncomplicated firewall)
-on the linux server
+use ufw (uncomplicated firewall) on the linux server
 lets see which ports are in use
-> sudo ss -tupln
+_sudo ss -tupln_
 
 install ufw
-> sudo apt install ufw
-> sudo ufw status # should be inactive
-> sudo ufw allow 2022
-> sudo ufw enable # set yes 
-> sudo ufw status # should be activated
+_sudo apt install ufw_
+
+_sudo ufw status_
+should be inactive
+
+_sudo ufw allow 2022_
+
+_sudo ufw enable_
+set yes 
+
+_sudo ufw status_
+should be activated
 
 before you leave this machine, try to use connection in a new terminal
-> ssh your-username@remote-serverip -p 2022 # if it works all things are good ;)
+_ssh your-username@remote-serverip -p 2022_
+if it works all things are good ;)
 
-for example, if you want to disable ping for security reasons
-> sudo nano /etc/ufw/before.rules
-edit one line in this file
+for example, if you want to disable ping for security reasons edit one line in this file
+_sudo nano /etc/ufw/before.rules_
 
 ok icmp codes for INPUT
--A ufw-before-input -p icmp --icmp-type echo-request -j DROP
-> sudo ufw reload
+_-A ufw-before-input -p icmp --icmp-type echo-request -j DROP_
 
-now check if ping get requests, if yes, reboot your linux server
-> sudo reboot
+Reload ufw config
+_sudo ufw reload_
+
+now check if ping get requests, if not, reboot your linux server
+_sudo reboot_
 
 now, it should be no more request on ping
 
